@@ -28,7 +28,9 @@ Keep-Alives are a mechanism that bridges TCP and HTTP, and allow a single TCP co
 
 TCP connections can persist even after HTTP requests have concluded. However, to manage resources efficiently, idle connections are typically terminated after a certain period of inactivity. To enhance connection reuse and minimize connection overhead, keep-alives are employed. These mechanisms collectively optimize the performance and reliability of web applications while conserving network resources.
 
-If either a user or an origin does not respond to two keep-alives, Cloudflare will sever the connection by sending a TCP Reset (RST) packet.
+An origin connection can remain idle for up to 30 seconds. After 30 seconds, a keepalive is issued. If an origin does not respond to the first keepalive after 5 seconds, another keepalive is issued. If the origin does not respond for 5 seconds after this second keepalive, Cloudflare will sever the connection by sending a TCP Reset (RST) packet.[^1]
+
+[^1] https://github.com/cloudflare/pingora/blob/21703dfe835f7a8301fd60ccf0a0d61ada88fb72/pingora-core/src/protocols/l4/ext.rs#L566-L580
 
 For connections to users, Cloudflare has a default idle timeout of 400 seconds. After the 400 seconds, Cloudflare will start sending keep-alive probes every 75 seconds. If nine consecutive probes are unanswered, Cloudflare will sever the connection by sending an RST packet.
 
