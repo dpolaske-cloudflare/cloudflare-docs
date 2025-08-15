@@ -23,3 +23,7 @@ Cloudflare halted the request for one of the following reasons:
 
 - If an A record within your Cloudflare DNS app points to a [Cloudflare IP address](https://www.cloudflare.com/ips/), update the IP address to your origin web server IP address. Reach out to your hosting provider if you need help obtaining the origin IP address.
 - There is a reverse-proxy at your origin that sends the request back through the Cloudflare proxy. Instead of using a reverse-proxy, contact your hosting provider or site administrator to configure an HTTP redirect at your origin.
+- The `cf-connecting-ip` header can be disabled via a Request Header Transform[^1] rule or via a "Remove visitor IP headers" headers Managed Transform Rule[^2]
+
+[^1] https://developers.cloudflare.com/rules/transform/request-header-modification/
+[^2] https://developers.cloudflare.com/rules/transform/managed-transforms/reference/#remove-visitor-ip-headers
